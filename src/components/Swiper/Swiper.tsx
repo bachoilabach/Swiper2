@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   Animated,
-  Dimensions,
   PanResponder,
   SafeAreaView,
   StyleSheet,
@@ -10,48 +9,42 @@ import {
   View,
 } from "react-native";
 import SwiperItem from "./SwiperItem";
-import { SLIDE_WIDTH, useSwiper } from "../../hooks/useSwiper";
-
-const slides = [
-  { name: "Slide 1" },
-  { name: "Slide 2" },
-  { name: "Slide 3" },
-  { name: "Slide 4" },
-  { name: "Slide 5" },
-];
+import { useSwiper } from "@/hooks/useSwiper";
+import {
+  SLIDE_WIDTH,
+  SWIPE_OFFSET,
+  SWIPE_THRESHOLD,
+  SWIPER_DATA,
+} from "@/constants/Swip";
 
 export default function Swiper() {
   const {
-    currentSlideIndex,
-    updateSlideIndex,
+    activeIndex,
     translateX,
-    initialPositionX,
-    currentSlideIndexRef,
+    panStartX,
+    activeIndexRef,
+    setSlide,
     goToNextSlide,
-    goToPrevSlide,
-  } = useSwiper(slides.length);
+    goToPrvSlide,
+  } = useSwiper(SWIPER_DATA.length);
 
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (_, gestureState) =>
-        Math.abs(gestureState.dx) > 10,
-
+        Math.abs(gestureState.dx) > SWIPE_THRESHOLD,
       onPanResponderGrant: () => {
-        initialPositionX.current = -currentSlideIndexRef.current * SLIDE_WIDTH;
+        panStartX.current = -activeIndexRef.current * SLIDE_WIDTH;
       },
-
       onPanResponderMove: (_, gestureState) => {
-        translateX.setValue(initialPositionX.current + gestureState.dx);
+        translateX.setValue(panStartX.current + gestureState.dx);
       },
-
       onPanResponderRelease: (_, gestureState) => {
         const { dx } = gestureState;
-        const currentIndex = currentSlideIndexRef.current;
-
-        if (dx < -50 && currentIndex < slides.length - 1) {
-          updateSlideIndex(currentIndex + 1);
-        } else if (dx > 50 && currentIndex > 0) {
-          updateSlideIndex(currentIndex - 1);
+        const currentIndex = activeIndexRef.current;
+        if (dx < -SWIPE_OFFSET && currentIndex < SWIPER_DATA.length - 1) {
+          setSlide(currentIndex + 1);
+        } else if (dx > SWIPE_OFFSET && currentIndex > 0) {
+          setSlide(currentIndex - 1);
         } else {
           Animated.spring(translateX, {
             toValue: -currentIndex * SLIDE_WIDTH,
@@ -69,20 +62,20 @@ export default function Swiper() {
           style={[styles.slidesWrapper, { transform: [{ translateX }] }]}
           {...panResponder.panHandlers}
         >
-          {slides.map((slide, index) => (
+          {SWIPER_DATA.map((slide, index) => (
             <SwiperItem key={index} {...slide} width={SLIDE_WIDTH} />
           ))}
         </Animated.View>
 
         <TouchableOpacity
-          onPress={goToPrevSlide}
+          onPress={goToPrvSlide}
           style={[styles.arrow, styles.leftArrow]}
         >
           <Text
-            style={{
-              fontSize: 30,
-              color: currentSlideIndex === 0 ? "#ccc" : "#007bff",
-            }}
+            style={[
+              styles.arrowText,
+              activeIndex === 0 && styles.arrowTextDisabled,
+            ]}
           >
             {"<"}
           </Text>
@@ -93,11 +86,11 @@ export default function Swiper() {
           style={[styles.arrow, styles.rightArrow]}
         >
           <Text
-            style={{
-              fontSize: 30,
-              color:
-                currentSlideIndex === slides.length - 1 ? "#ccc" : "#007bff",
-            }}
+            style={[
+              styles.arrowText,
+              activeIndex === SWIPER_DATA.length - 1 &&
+                styles.arrowTextDisabled,
+            ]}
           >
             {">"}
           </Text>
@@ -120,15 +113,24 @@ const styles = StyleSheet.create({
   slidesWrapper: {
     flexDirection: "row",
     position: "absolute",
-    width: SLIDE_WIDTH * slides.length,
+    width: SLIDE_WIDTH * SWIPER_DATA.length,
   },
+
   arrow: {
     position: "absolute",
+    padding: 10,
   },
   leftArrow: {
     left: 10,
   },
   rightArrow: {
     right: 10,
+  },
+  arrowText: {
+    fontSize: 30,
+    color: "#007bff",
+  },
+  arrowTextDisabled: {
+    color: "#ccc",
   },
 });

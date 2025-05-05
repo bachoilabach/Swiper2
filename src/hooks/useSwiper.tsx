@@ -1,47 +1,45 @@
-import { useRef, useState, useEffect } from "react";
-import { Animated, Dimensions } from "react-native";
+import { SLIDE_WIDTH } from "@/constants/Swip";
+import { useEffect, useRef, useState } from "react";
+import { Animated } from "react-native";
 
-const { width } = Dimensions.get("window");
-export const SLIDE_WIDTH = width;
-
-export const useSwiper = (slidesLength: number) => {
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+export const useSwiper = (totalSlides: number) => {
+  const [activeIndex, setActiveIndex] = useState(0); 
   const translateX = useRef(new Animated.Value(0)).current;
-  const initialPositionX = useRef(0);
-  const currentSlideIndexRef = useRef(currentSlideIndex);
+  const panStartX = useRef(0);
+  const activeIndexRef = useRef(activeIndex); 
 
-  const updateSlideIndex = (newIndex: number) => {
-    currentSlideIndexRef.current = newIndex;
-    setCurrentSlideIndex(newIndex);
+  const setSlide = (index: number) => {
+    activeIndexRef.current = index;
+    setActiveIndex(index);
   };
 
   useEffect(() => {
-    currentSlideIndexRef.current = currentSlideIndex;
+    activeIndexRef.current = activeIndex;
     Animated.spring(translateX, {
-      toValue: -currentSlideIndex * SLIDE_WIDTH,
+      toValue: -activeIndex * SLIDE_WIDTH,
       useNativeDriver: true,
     }).start();
-  }, [currentSlideIndex]);
+  }, [activeIndex]);
 
   const goToNextSlide = () => {
-      if (currentSlideIndex < slidesLength - 1) {
-        updateSlideIndex(currentSlideIndex + 1);
-      }
-    };
-  
-    const goToPrevSlide = () => {
-      if (currentSlideIndex > 0) {
-        updateSlideIndex(currentSlideIndex - 1);
-      }
-    };
+    if (activeIndex < totalSlides - 1) {
+      setSlide(activeIndex + 1);
+    }
+  };
+
+  const goToPrvSlide = () => {
+    if (activeIndex > 0) {
+      setSlide(activeIndex - 1);
+    }
+  };
 
   return {
-    currentSlideIndex,
-    updateSlideIndex,
+    activeIndex,
     translateX,
-    initialPositionX,
-    currentSlideIndexRef,
+    panStartX,
+    activeIndexRef,
+    setSlide,
     goToNextSlide,
-    goToPrevSlide
+    goToPrvSlide,
   };
 };

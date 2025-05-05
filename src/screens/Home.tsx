@@ -1,6 +1,6 @@
 import { SafeAreaView, StyleSheet } from "react-native";
 import React from "react";
-import Swiper from "../components/Swiper/Swiper";
+import Swiper from "@/components/Swiper/Swiper";
 
 const Home = () => {
   return (

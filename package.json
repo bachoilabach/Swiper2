@@ -2,6 +2,14 @@
   "name": "swiper2",
   "version": "1.0.0",
   "main": "index.ts",
+  "_moduleAliases": {
+    "@root": ".",
+    "@utils": "src/utils",
+    "@screens": "src/screens",
+    "@components": "src/components",
+    "@hooks": "src/hooks",
+    "@constants": "src/constants"
+  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -9,14 +17,19 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@types/module-alias": "^2.0.4",
     "expo": "~53.0.7",
     "expo-status-bar": "~2.2.3",
+    "module-alias": "^2.2.3",
     "react": "19.0.0",
     "react-native": "0.79.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@babel/plugin-transform-private-methods": "^7.27.1",
     "@types/react": "~19.0.10",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "metro-react-native-babel-preset": "^0.77.0",
     "typescript": "~5.8.3"
   },
   "private": true
