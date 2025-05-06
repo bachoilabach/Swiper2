@@ -1,12 +1,13 @@
-import { SLIDE_WIDTH } from "@/constants/Swip";
 import { useEffect, useRef, useState } from "react";
 import { Animated } from "react-native";
 
+import { SLIDE_WIDTH } from "@/constants/Swip";
+
 export const useSwiper = (totalSlides: number) => {
-  const [activeIndex, setActiveIndex] = useState(0); 
+  const [activeIndex, setActiveIndex] = useState(0);
   const translateX = useRef(new Animated.Value(0)).current;
   const panStartX = useRef(0);
-  const activeIndexRef = useRef(activeIndex); 
+  const activeIndexRef = useRef(activeIndex);
 
   const setSlide = (index: number) => {
     activeIndexRef.current = index;

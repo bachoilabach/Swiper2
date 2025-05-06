@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import {
   Animated,
   PanResponder,
@@ -8,14 +8,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import SwiperItem from "./SwiperItem";
-import { useSwiper } from "@/hooks/useSwiper";
+
 import {
   SLIDE_WIDTH,
   SWIPE_OFFSET,
   SWIPE_THRESHOLD,
   SWIPER_DATA,
 } from "@/constants/Swip";
+import { useSwiper } from "@/hooks/useSwiper";
+
+import SwiperItem from "./SwiperItem";
 
 export default function Swiper() {
   const {
@@ -52,7 +54,7 @@ export default function Swiper() {
           }).start();
         }
       },
-    })
+    }),
   ).current;
 
   return (

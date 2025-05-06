@@ -1,5 +1,6 @@
-import { SafeAreaView, StyleSheet } from "react-native";
 import React from "react";
+import { SafeAreaView } from "react-native";
+
 import Swiper from "@/components/Swiper/Swiper";
 
 const Home = () => {
@@ -11,7 +12,4 @@ const Home = () => {
     </>
   );
 };
-
 export default Home;
-
-const styles = StyleSheet.create({});

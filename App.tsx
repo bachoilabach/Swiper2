@@ -1,5 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
+
 import Home from "./src/screens/Home";
 
 export default function App() {
@@ -9,5 +9,3 @@ export default function App() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({});

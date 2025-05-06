@@ -1,6 +1,7 @@
-import { SLIDE_BORDER_RADIUS, SLIDE_HEIGHT } from "@/constants/Swip";
 import React, { memo } from "react";
 import { StyleSheet, Text, View } from "react-native";
+
+import { SLIDE_BORDER_RADIUS, SLIDE_HEIGHT } from "@/constants/Swip";
 
 type SwiperItemProps = {
   name: string;
@@ -21,7 +22,7 @@ export default memo(SwiperItem);
 
 const styles = StyleSheet.create({
   slide: {
-    height: SLIDE_HEIGHT, 
+    height: SLIDE_HEIGHT,
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
